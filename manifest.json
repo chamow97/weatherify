@@ -1,0 +1,24 @@
+{
+  "name": "Weatherify",
+  "description": "An extension to list songs based on the current weather.",
+  "version": "1.0",
+  "manifest_version": 2,
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": ["storage", "activeTab", "geolocation", "https://api.openweathermap.org/*"],
+  "browser_action": {
+    "default_icon": {
+      "16": "/images/weatherify16.png",
+      "32": "/images/weatherify16.png",
+      "48": "/images/weatherify16.png",
+      "128": "/images/weatherify16.png"
+    }
+  },
+  "icons": {
+    "16": "/images/weatherify16.png",
+    "32": "/images/weatherify16.png",
+    "48": "/images/weatherify16.png",
+    "128": "/images/weatherify16.png"
+  }
+}
