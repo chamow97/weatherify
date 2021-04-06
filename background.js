@@ -38,7 +38,7 @@ chrome.browserAction.onClicked.addListener(() => {
       console.log("Fetched the latitude longitude")
       clearTimeout(timeout)
 
-      const weatherURL = getOpenWeatherUrl(position.coords.latitude, position.coords.longitude, "cd44dc33e20a76baa9ea38a4aa6805b4")
+      const weatherURL = getOpenWeatherUrl(position.coords.latitude, position.coords.longitude, "")
 
       fetch(weatherURL).then(data => data.text()).then(result => {
         console.log("Fetched the Weather Data for the current location")
