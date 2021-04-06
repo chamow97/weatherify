@@ -1,45 +1,45 @@
 
-let getSpotifyUrl = (searchTerm) => {
+const getOpenWeatherUrl = (latitude, longitude, appId) => {
+  return `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${appId}`
+}
+
+const getSpotifyUrl = (searchTerm) => {
   return `https://open.spotify.com/search/${searchTerm}/tracks`
+}
+
+const weatherConditionLanguageMap = {
+  Thunderstorm: {
+    tamil: "ada mazhai"
+  },
+  Drizzle: {
+    tamil: "thooral"
+  },
+  Rain: {
+    tamil: "mazhai"
+  },
+  Snow: {
+    tamil: "pani"
+  },
+  Clear: {
+    tamil: "vaanam"
+  },
+  Clouds: {
+    tamil: "megam"
+  }
 }
 
 chrome.browserAction.onClicked.addListener(() => {
   let weatherCondition = "Clear"
   let searchTerm = "vaanam"
 
-  let geoFail = function (error) {
-    // handle the error
-  }
-
-  let weatherConditionLanguageMap = {
-    Thunderstorm: {
-      tamil: "ada mazhai"
-    },
-    Drizzle: {
-      tamil: "thooral"
-    },
-    Rain: {
-      tamil: "mazhai"
-    },
-    Snow: {
-      tamil: "pani"
-    },
-    Clear: {
-      tamil: "vaanam"
-    },
-    Clouds: {
-      tamil: "megam"
-    }
-  }
-
   if (navigator.geolocation) {
     let timeout = setTimeout("geoFailed()", 10000)
     let coord = navigator.geolocation.getCurrentPosition(function (position) {
       console.log("Fetched the latitude longitude")
       clearTimeout(timeout)
-      const latitude = position.coords.latitude
-      const longitude = position.coords.longitude
-      const weatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid={}`
+
+      const weatherURL = getOpenWeatherUrl(position.coords.latitude, position.coords.longitude, "cd44dc33e20a76baa9ea38a4aa6805b4")
+
       fetch(weatherURL).then(data => data.text()).then(result => {
         console.log("Fetched the Weather Data for the current location")
         const resultAsJson = JSON.parse(result)
@@ -48,11 +48,12 @@ chrome.browserAction.onClicked.addListener(() => {
           weatherCondition = resultAsJson["weather"][0]["main"]
         }
       })
+
       console.log(weatherCondition)
       if (weatherConditionLanguageMap.hasOwnProperty(weatherCondition)) {
         searchTerm = weatherConditionLanguageMap[weatherCondition]["tamil"]
       }
-      console.log("Opening Spotify URL ")
+      console.log("Opening Spotify URL")
       window.open(getSpotifyUrl(searchTerm), '_blank').focus()
     }, function (error) {
       clearTimeout(timeout)
